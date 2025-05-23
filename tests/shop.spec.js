@@ -15,7 +15,7 @@ test.describe('shop checking', async () => {
         name: 'Lowepro Slingshot Edge 250 AW',
         exact: true,
       }),
-    ).toHaveText('Lowepro Slingshot Edge 250 AWa');
+    ).toHaveText('Lowepro Slingshot Edge 250 AW');
   });
 
   test('adding few items to cart', async ({ page }) => {
