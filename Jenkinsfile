@@ -7,36 +7,29 @@ pipeline {
         bat 'npm ci'
       }
     }
-    stage('Install Playwright Browsers') {
-  steps {
-    bat 'npx playwright install --with-deps'
-  }
-}
-    stage('Run Playwright tests') {
+
+    stage('Install Playwright browsers') {
       steps {
-        bat 'npm run test'
+        bat 'npx playwright install --with-deps'
       }
     }
-//     stage('Archive Playwright Report') {
-//   steps {
-//     powershell '''
-//       Compress-Archive -Path playwright-report\\* -DestinationPath playwright-report.zip
-//     '''
-//     archiveArtifacts artifacts: 'playwright-report.zip', fingerprint: true
-//   }
-// }
-    stage('Publish Playwright HTML Report') {
+
+    stage('Run tests') {
       steps {
-        publishHTML(target: [
-          allowMissing: false,
-          alwaysLinkToLastBuild: true,
-          keepAll: true,
-          reportDir: 'playwright-report',
-          reportFiles: 'index.html',
-          reportName: 'Playwright Test Report'
-        ])
+        bat 'npx playwright test --reporter=list,allure-playwright'
       }
     }
-    
+
+    stage('Generate Allure Report') {
+      steps {
+        bat 'npx allure generate allure-results --clean -o allure-report'
+      }
+    }
+
+    stage('Publish Allure Report') {
+      steps {
+        allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+      }
+    }
   }
 }
