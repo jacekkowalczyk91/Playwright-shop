@@ -34,8 +34,11 @@ pipeline {
           if (!testName) {
             error "Parametr TEST_NAME nie został wybrany"
           }
-          // Uruchamiamy test z filtrem
-          bat "npx playwright test --grep \"${testName}\" --reporter=list,allure-playwright"
+          // Wydobycie tylko ostatniego fragmentu opisu testu (po ostatnim "›")
+def grepQuery = params.TEST_NAME.tokenize('›')[-1].trim()
+
+bat "npx playwright test --grep \"${grepQuery}\" --reporter=list,allure-playwright"
+
         }
       }
     }
