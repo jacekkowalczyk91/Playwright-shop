@@ -2,12 +2,7 @@ pipeline {
   agent any
 
   stages {
-    stage('Prepare Test List') {
-      steps {
-        // Generujemy plik z listą testów (np. dla Active Choices)
-        bat 'npx playwright test --list > tests-list.txt'
-      }
-    }
+    
     stage('Install dependencies') {
       steps {
         bat 'npm ci'
@@ -17,6 +12,12 @@ pipeline {
     stage('Install Playwright browsers') {
       steps {
         bat 'npx playwright install --with-deps'
+      }
+    }
+    stage('Prepare Test List') {
+      steps {
+        // Generujemy plik z listą testów (np. dla Active Choices)
+        bat 'npx playwright test --list > tests-list.txt'
       }
     }
 
