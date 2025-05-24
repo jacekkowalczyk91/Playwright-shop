@@ -2,6 +2,12 @@ pipeline {
   agent any
 
   stages {
+    stage('Prepare Test List') {
+      steps {
+        // Generujemy plik z listą testów (np. dla Active Choices)
+        bat 'npx playwright test --list > tests-list.txt'
+      }
+    }
     stage('Install dependencies') {
       steps {
         bat 'npm ci'
@@ -14,9 +20,22 @@ pipeline {
       }
     }
 
-    stage('Run tests') {
+    // stage('Run tests') {
+    //   steps {
+    //     bat 'npx playwright test --reporter=list,allure-playwright'
+    //   }
+    // }
+    stage('Run selected test') {
       steps {
-        bat 'npx playwright test --reporter=list,allure-playwright'
+        script {
+          // Parametr TEST_NAME jest dostępny dzięki Active Choices plugin w konfiguracji joba
+          def testName = params.TEST_NAME
+          if (!testName) {
+            error "Parametr TEST_NAME nie został wybrany"
+          }
+          // Uruchamiamy test z filtrem
+          bat "npx playwright test --grep \"${testName}\" --reporter=list,allure-playwright"
+        }
       }
     }
 
@@ -34,7 +53,7 @@ bat 'npx allure generate "allure-results" --clean -o "allure-report"'
             includeProperties: false,
             reportBuildPolicy: 'ALWAYS',
             results: [[path: 'allure-results']],
-            commandline: 'AllureCommandline'  // nazwa narzędzia z global config
+            // commandline: 'AllureCommandline'  // nazwa narzędzia z global config
         )
     }
 }

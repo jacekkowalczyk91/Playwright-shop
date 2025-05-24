@@ -1,0 +1,6 @@
+Listing tests:
+  [chromium] › shop.spec.js:7:7 › shop checking › adding item to cart
+  [chromium] › shop.spec.js:21:7 › shop checking › adding few items to cart
+  [chromium] › shop2.spec.js:7:7 › shop checking › adding item to cart
+  [chromium] › shop2.spec.js:21:7 › shop checking › adding few items to cart
+Total: 4 tests in 2 files
