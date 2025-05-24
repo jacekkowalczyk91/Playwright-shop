@@ -17,14 +17,14 @@ pipeline {
         bat 'npm run test'
       }
     }
-    stage('Archive Playwright Report') {
-  steps {
-    powershell '''
-      Compress-Archive -Path playwright-report\\* -DestinationPath playwright-report.zip
-    '''
-    archiveArtifacts artifacts: 'playwright-report.zip', fingerprint: true
-  }
-}
+//     stage('Archive Playwright Report') {
+//   steps {
+//     powershell '''
+//       Compress-Archive -Path playwright-report\\* -DestinationPath playwright-report.zip
+//     '''
+//     archiveArtifacts artifacts: 'playwright-report.zip', fingerprint: true
+//   }
+// }
     stage('Publish Playwright HTML Report') {
       steps {
         publishHTML(target: [
