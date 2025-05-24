@@ -17,6 +17,12 @@ pipeline {
         sh 'npm run test'
       }
     }
+    stage('Archive Playwright Report') {
+  steps {
+    sh 'zip -r playwright-report.zip playwright-report'
+    archiveArtifacts artifacts: 'playwright-report.zip', fingerprint: true
+  }
+}
     stage('Publish Playwright HTML Report') {
       steps {
         publishHTML(target: [
