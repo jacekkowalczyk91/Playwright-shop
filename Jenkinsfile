@@ -19,7 +19,9 @@ pipeline {
     }
     stage('Archive Playwright Report') {
   steps {
-    sh 'zip -r playwright-report.zip playwright-report'
+    powershell '''
+      Compress-Archive -Path playwright-report\\* -DestinationPath playwright-report.zip
+    '''
     archiveArtifacts artifacts: 'playwright-report.zip', fingerprint: true
   }
 }
