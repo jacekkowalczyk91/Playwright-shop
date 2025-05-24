@@ -29,9 +29,14 @@ bat 'npx allure generate "allure-results" --clean -o "allure-report"'
     }
 
     stage('Publish Allure Report') {
-      steps {
-        allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
-      }
+    steps {
+        allure(
+            includeProperties: false,
+            reportBuildPolicy: 'ALWAYS',
+            results: [[path: 'allure-results']],
+            commandline: 'AllureCommandline'  // nazwa narzędzia z global config
+        )
     }
+}
   }
 }
